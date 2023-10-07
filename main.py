@@ -15,11 +15,13 @@ players = {
     "torkiel": {"ELO": 1200, "steamID": 2931088},
     "abgdevzt": {"ELO": 1000, "steamID": 8925314},
     "Nefro": {"ELO": 900, "steamID": 2673312},
+    "the_kupre": {"ELO": 1250, "steamID": 10448993},
+    "Urbifex": {"ELO": 1008, "steamID": 10448999}
 }
 
 
 # Define the API endpoint
-def GetEloOf(id):
+def GetEloOf(player, player_name, id):
 
     api_url = "https://aoe2.net/api/leaderboard"
 
@@ -41,17 +43,21 @@ def GetEloOf(id):
         # Parse the JSON response
         data = response.json()
 
+        if data["leaderboard"] == []:
+            print(player_name, player["ELO"])
+            return player["ELO"]
+
         # Return the ELO of the given player
         print(data['leaderboard'][0]['name'], '-', data['leaderboard'][0]['rating'])
         return data['leaderboard'][0]['rating']
 
     else:
-        return -99999999
+        return player["ELO"]
 
 
 def Fill_Ellos():
     for i in players:
-        players[i]["ELO"] = GetEloOf(players[i]["steamID"])
+        players[i]["ELO"] = GetEloOf(players[i], i, players[i]["steamID"])
 
 
 # Function to add a name to the selected list
